@@ -1,16 +1,30 @@
 package com.mycompany.springapp.productapp.model;
 
-public class ProductModel {
-    private Integer id;
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Entity(name = "PRODUCT_TABLE")
+public class ProductModel implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @Column(name = "PRODUCT_ID")
+    private Long id;
+
+    @Column(name = "PRODUCT_TITLE")
     private String title;
+
+    @Column(name = "PRODUCT_DESCRIPTION")
     private String description;
+
+    @Column(name = "PRODUCT_PRICE")
     private Double price;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

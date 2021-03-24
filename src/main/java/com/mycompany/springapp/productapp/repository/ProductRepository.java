@@ -5,36 +5,121 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+/*
+ * author name: Ishita
+ * class name: ProductRepository
+ * date: 20-03-2021
+ * description: This class performs the CRUD operation on product
+ */
 @Repository
 public class ProductRepository {
 
-    List<ProductModel> displayAllProducts = new ArrayList<>();
+    List<ProductModel> productsList = new ArrayList<>();
+
+    public ProductModel createProduct(ProductModel productModel)
+    {
+        this.productsList.add(productModel);
+        return productModel;
+    }
 
     public List<ProductModel> getAllProducts()
     {
+        return productsList;
+    }
+    public ProductModel deleteProduct(Long id){
 
-        ProductModel pm = new ProductModel();
-        pm.setId(1);
-        pm.setTitle("Laptop");
-        pm.setDescription("HP");
-        pm.setPrice(35000.34);
-        displayAllProducts.add(pm);
+        ProductModel productModel = null;
 
-        pm = new ProductModel();
-        pm.setId(2);
-        pm.setTitle("Redmi 10 pro");
-        pm.setDescription("Mobile");
-        pm.setPrice(13000.45);
-        displayAllProducts.add(pm);
+        for (int i=0; i<this.productsList.size(); i++){
+            productModel = this.productsList.get(i);
 
+            if(productModel.getId().longValue() == id.longValue()){
+                this.productsList.remove(i);
+                break;
+            }
+        }
+        return productModel;
+    }
+    //Logic for updating a product's price based on product ID
+    public ProductModel updateProduct(long id,ProductModel productModel)
+    {
+        ProductModel pm = null;
+        //logic for updating the product based on product ID
+        for(int i = 0; i<this.productsList.size(); i++)
+        {
+            pm = this.productsList.get(i);
+            if(pm.getId() == id)
+            {
+                //if product is found, then update the product
+                pm.setPrice(productModel.getPrice());
+                pm.setDescription(productModel.getDescription());
+                this.productsList.set(i,pm);
+                break;
+            }
+        }
+        return pm;
+    }
 
-        pm = new ProductModel();
-        pm.setId(3);
-        pm.setTitle("Apple X");
-        pm.setDescription("mobile");
-        pm.setPrice(45000.56);
-        displayAllProducts.add(pm);
+    /**
+     * method name: searchProductByDescription
+     * method parameters: String
+     * method return type: List<ProductModel>
+     * description: This function searches a product based on description
+     * **/
+    public List<ProductModel> searchProductByDescription(String description)
+    {
+        ProductModel pm = null;
+        List<ProductModel> listOfProducts = new ArrayList<>();
 
-        return displayAllProducts;
+        //loops through all the products
+        for(int i = 0; i < this.productsList.size(); i++)
+        {
+            pm = this.productsList.get(i);
+            //checks if the current product description matches with the user input
+            if(pm.getDescription().contains(description))
+            {
+                //keep adding the matching product to a new list
+                listOfProducts.add(pm);
+            }
+        }
+        //return the new matching product list
+        return listOfProducts;
+    }
+
+    public List<ProductModel> searchProduct(String description,double fromPrice,double toPrice)
+    {
+        ProductModel pm = null;
+        List<ProductModel> listOfProducts = new ArrayList<>();
+
+        //loops through all the products
+        for(int i = 0; i < this.productsList.size(); i++)
+        {
+            pm = this.productsList.get(i);
+
+            //checks if the current product description matches with the user input
+            //and whether the product lies within the certain range
+            if(pm.getDescription().contains(description) && (pm.getPrice()>=fromPrice && pm.getPrice()<=toPrice))
+            {
+                //keep adding the matching product to a new list
+                listOfProducts.add(pm);
+            }
+        }
+        //return the new matching product list
+        return listOfProducts;
+    }
+
+    //This function searches a product based on productID
+    public ProductModel searchProductById(long id)
+    {
+        ProductModel pm = null;
+        for(int i = 0; i<this.productsList.size(); i++)
+        {
+            pm = this.productsList.get(i);
+            if(pm.getId() == id)
+            {
+                break;
+            }
+        }
+        return pm;
     }
 }
