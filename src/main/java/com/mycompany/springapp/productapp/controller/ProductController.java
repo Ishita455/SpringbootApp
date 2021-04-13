@@ -1,5 +1,6 @@
 package com.mycompany.springapp.productapp.controller;
 
+import com.mycompany.springapp.productapp.exception.CreateNewProductException;
 import com.mycompany.springapp.productapp.model.ProductModel;
 import com.mycompany.springapp.productapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,12 @@ public class ProductController {
         ResponseEntity<ProductModel> res = new ResponseEntity<ProductModel>(productModel,HttpStatus.OK);
         return res;
 
+    }
+    @PostMapping(path = "/products/createnewproduct", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<?> createNewProduct(@RequestBody ProductModel productModel) throws CreateNewProductException {
+        ResponseEntity<?> res = null;
+        productModel = ps.createProduct(productModel);
+        res = new ResponseEntity<>(productModel, HttpStatus.CREATED);
+        return res;
     }
 }

@@ -20,6 +20,10 @@ public class ProductModel implements Serializable {
     @Column(name = "PRODUCT_PRICE")
     private Double price;
 
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_ID")
+    private CategoryModel categoryModel;
+
     public Long getId() {
         return id;
     }
@@ -50,5 +54,13 @@ public class ProductModel implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public CategoryModel getCategoryModel() {
+        return categoryModel;
+    }
+
+    public void setCategoryModel(CategoryModel categoryModel) {
+        this.categoryModel = categoryModel;
     }
 }
